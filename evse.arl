@@ -2,12 +2,12 @@
 
 archetype evse
 
-variable admin : role = @tz1XZ7s6uStC2hZVpPQhXgcdXPwxifByF3Ao
-variable admin_candidate : role = @tz1XZ7s6uStC2hZVpPQhXgcdXPwxifByF3Ao
+variable admin : role = @tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a
+variable admin_candidate : role = @tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a
 
 // EVSE DATA
 
-variable gps : string = "47.6818989,2.7376169999999997"
+variable gps : string = "48.8701025,2.2909664"
 
 variable currency : nat = 1
 
