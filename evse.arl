@@ -1,13 +1,11 @@
 /* Copyright (C) 2020 Werenode SAS  */
 
-archetype evse
-
-variable admin : address = @tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a
-variable admin_candidate : address = @tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a
-
+archetype evse(
+  admin : address,
 // EVSE DATA
+  gps : string)
 
-variable gps : string = "48.8701025,2.2909664"
+variable admin_candidate : address = admin
 
 variable currency : nat = 1
 
