@@ -1,13 +1,13 @@
-# (Pair "tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a" (Pair "tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a" (Pair {  } (Pair {  } (Pair {  } (Pair {  } { Elt "" 0x68747470733a2f2f776572656e6f64652e636f6d2f636f6e7472616374732f61646472657373626f6f6b2e6a736f6e }))))))
+# (Pair admin (Pair admin (Pair { } (Pair { } (Pair { } { })))))
 {
-  storage (pair (address %admin) (pair (address %admin_candidate) (pair (map %evse string (pair address (pair address address))) (pair (map %evsemanager address (pair string (pair nat (set string)))) (pair (map %owner address (set string)) (pair (set %whitelist address) (big_map %metadata string bytes)))))));
+  storage (pair (address %admin) (pair (address %admin_candidate) (pair (map %evse string (pair (address %evse_addr) (pair (address %evse_mng) (address %evse_owner)))) (pair (map %evsemanager address (pair (string %mng_url) (pair (nat %mng_port) (set %evses string)))) (pair (map %owner address (set string)) (set %whitelist address))))));
   parameter (or (address %add_whitelist) (or (address %rm_whitelist) (or (pair %addupdate_evse (string %id) (pair (address %iaddr) (pair (address %imng) (pair (string %iurl) (pair (nat %iport) (address %iowner)))))) (or (string %delete_evse) (or (address %transfer_admin) (unit %accept_admin))))));
   code { UNPAIR;
-         DIP { UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP };
+         DIP { UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP };
          IF_LEFT
-           { DIG 7;
+           { DIG 6;
              DUP;
-             DUG 8;
+             DUG 7;
              SENDER;
              COMPARE;
              EQ;
@@ -16,29 +16,27 @@
                { PUSH string "InvalidCaller";
                  FAILWITH }
                {  };
-             DIG 2;
+             DIG 1;
              DUP;
-             DUG 3;
+             DUG 2;
              DIG 1;
              DUP;
              DUG 2;
              MEM;
              IF
-               { PUSH string "KeyAlreadyExists";
+               { PUSH string "KeyExists";
                  FAILWITH }
-               { DIG 2;
+               { DIG 1;
                  DUP;
-                 DUG 3;
+                 DUG 2;
                  PUSH bool True;
                  DIG 2;
                  DUP;
                  DUG 3;
                  UPDATE;
-                 DIP { DIG 2; DROP };
-                 DUG 2 };
+                 DIP { DIG 1; DROP };
+                 DUG 1 };
              DROP;
-             SWAP;
-             PAIR;
              SWAP;
              PAIR;
              SWAP;
@@ -52,9 +50,9 @@
              NIL operation;
              PAIR }
            { IF_LEFT
-               { DIG 7;
+               { DIG 6;
                  DUP;
-                 DUG 8;
+                 DUG 7;
                  SENDER;
                  COMPARE;
                  EQ;
@@ -63,19 +61,17 @@
                    { PUSH string "InvalidCaller";
                      FAILWITH }
                    {  };
-                 DIG 2;
+                 DIG 1;
                  DUP;
-                 DUG 3;
+                 DUG 2;
                  PUSH bool False;
                  DIG 2;
                  DUP;
                  DUG 3;
                  UPDATE;
-                 DIP { DIG 2; DROP };
-                 DUG 2;
+                 DIP { DIG 1; DROP };
+                 DUG 1;
                  DROP;
-                 SWAP;
-                 PAIR;
                  SWAP;
                  PAIR;
                  SWAP;
@@ -99,79 +95,33 @@
                      SWAP;
                      UNPAIR;
                      SWAP;
-                     DIG 7;
+                     DIG 6;
                      DUP;
-                     DUG 8;
+                     DUG 7;
                      SENDER;
                      MEM;
                      NOT;
                      IF
-                       { PUSH string "InvalidCondition: r1";
+                       { PUSH string "r1";
+                         PUSH string "InvalidCondition";
+                         PAIR;
                          FAILWITH }
                        {  };
-                     DIG 10;
+                     DIG 9;
                      DUP;
-                     DUG 11;
+                     DUG 10;
                      DIG 6;
                      DUP;
                      DUG 7;
                      MEM;
                      IF
-                       { DIG 10;
+                       { DIG 9;
                          DUP;
-                         DUG 11;
+                         DUG 10;
                          NONE (pair address (pair address address));
                          DIG 7;
                          DUP;
                          DUG 8;
-                         UPDATE;
-                         DIP { DIG 10; DROP };
-                         DUG 10;
-                         DIG 9;
-                         DUP;
-                         DUG 10;
-                         DIG 10;
-                         DUP;
-                         DUG 11;
-                         DIG 5;
-                         DUP;
-                         DUG 6;
-                         GET;
-                         IF_NONE
-                           { PUSH string "GetNoneValue";
-                             FAILWITH }
-                           {  };
-                         UNPAIR;
-                         SWAP;
-                         UNPAIR;
-                         SWAP;
-                         DROP;
-                         DIG 12;
-                         DUP;
-                         DUG 13;
-                         DIG 7;
-                         DUP;
-                         DUG 8;
-                         GET;
-                         IF_NONE
-                           { PUSH string "GetNoneValue";
-                             FAILWITH }
-                           {  };
-                         CDR;
-                         CDR;
-                         PUSH bool False;
-                         DIG 10;
-                         DUP;
-                         DUG 11;
-                         UPDATE;
-                         SWAP;
-                         PAIR;
-                         SWAP;
-                         PAIR;
-                         SOME;
-                         DIG 5;
-                         DUP;
-                         DUG 6;
                          UPDATE;
                          DIP { DIG 9; DROP };
                          DUG 9;
@@ -181,12 +131,60 @@
                          DIG 9;
                          DUP;
                          DUG 10;
+                         DIG 5;
+                         DUP;
+                         DUG 6;
+                         GET;
+                         IF_NONE
+                           { PUSH string "NotFound";
+                             FAILWITH }
+                           {  };
+                         UNPAIR;
+                         SWAP;
+                         UNPAIR;
+                         SWAP;
+                         DROP;
+                         DIG 11;
+                         DUP;
+                         DUG 12;
+                         DIG 7;
+                         DUP;
+                         DUG 8;
+                         GET;
+                         IF_NONE
+                           { PUSH string "NotFound";
+                             FAILWITH }
+                           {  };
+                         CDR;
+                         CDR;
+                         PUSH bool False;
+                         DIG 10;
+                         DUP;
+                         DUG 11;
+                         UPDATE;
+                         SWAP;
+                         PAIR;
+                         SWAP;
+                         PAIR;
+                         SOME;
+                         DIG 5;
+                         DUP;
+                         DUG 6;
+                         UPDATE;
+                         DIP { DIG 8; DROP };
+                         DUG 8;
+                         DIG 7;
+                         DUP;
+                         DUG 8;
+                         DIG 8;
+                         DUP;
+                         DUG 9;
                          DIG 2;
                          DUP;
                          DUG 3;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          PUSH bool False;
@@ -199,12 +197,12 @@
                          DUP;
                          DUG 3;
                          UPDATE;
-                         DIP { DIG 8; DROP };
-                         DUG 8 }
+                         DIP { DIG 7; DROP };
+                         DUG 7 }
                        {  };
-                     DIG 10;
+                     DIG 9;
                      DUP;
-                     DUG 11;
+                     DUG 10;
                      DIG 1;
                      DUP;
                      DUG 2;
@@ -221,47 +219,47 @@
                      DUP;
                      DUG 8;
                      UPDATE;
-                     DIP { DIG 10; DROP };
-                     DUG 10;
-                     DIG 9;
+                     DIP { DIG 9; DROP };
+                     DUG 9;
+                     DIG 8;
                      DUP;
-                     DUG 10;
+                     DUG 9;
                      DIG 4;
                      DUP;
                      DUG 5;
                      MEM;
                      IF
-                       { DIG 10;
+                       { DIG 9;
                          DUP;
-                         DUG 11;
+                         DUG 10;
                          DIG 6;
                          DUP;
                          DUG 7;
                          MEM;
                          IF
-                           { DIG 9;
+                           { DIG 8;
                              DUP;
-                             DUG 10;
+                             DUG 9;
                              DIG 4;
                              DUP;
                              DUG 5;
                              GET;
                              IF_NONE
-                               { PUSH string "GetNoneValue";
+                               { PUSH string "NotFound";
                                  FAILWITH }
                                {  };
+                             DIG 9;
+                             DUP;
+                             DUG 10;
                              DIG 10;
                              DUP;
                              DUG 11;
-                             DIG 11;
-                             DUP;
-                             DUG 12;
                              DIG 6;
                              DUP;
                              DUG 7;
                              GET;
                              IF_NONE
-                               { PUSH string "GetNoneValue";
+                               { PUSH string "NotFound";
                                  FAILWITH }
                                {  };
                              UNPAIR;
@@ -296,32 +294,32 @@
                              DUP;
                              DUG 7;
                              UPDATE;
-                             DIP { DIG 10; DROP };
-                             DUG 10;
+                             DIP { DIG 9; DROP };
+                             DUG 9;
                              DROP }
-                           { PUSH string "KeyNotFound";
+                           { PUSH string "NotFound";
                              FAILWITH } }
-                       { DIG 9;
+                       { DIG 8;
                          DUP;
-                         DUG 10;
+                         DUG 9;
                          DIG 4;
                          DUP;
                          DUG 5;
                          MEM;
                          IF
-                           { PUSH string "KeyAlreadyExists";
+                           { PUSH string "KeyExists";
                              FAILWITH }
-                           { DIG 10;
+                           { DIG 9;
                              DUP;
-                             DUG 11;
+                             DUG 10;
                              DIG 6;
                              DUP;
                              DUG 7;
                              MEM;
                              IF
-                               { DIG 9;
+                               { DIG 8;
                                  DUP;
-                                 DUG 10;
+                                 DUG 9;
                                  EMPTY_SET string;
                                  PUSH bool True;
                                  DIG 8;
@@ -341,40 +339,40 @@
                                  DUP;
                                  DUG 6;
                                  UPDATE;
-                                 DIP { DIG 9; DROP };
-                                 DUG 9 }
-                               { PUSH string "KeyNotFound";
+                                 DIP { DIG 8; DROP };
+                                 DUG 8 }
+                               { PUSH string "NotFound";
                                  FAILWITH } } };
-                     DIG 8;
+                     DIG 7;
                      DUP;
-                     DUG 9;
+                     DUG 8;
                      DIG 1;
                      DUP;
                      DUG 2;
                      MEM;
                      IF
-                       { DIG 10;
+                       { DIG 9;
                          DUP;
-                         DUG 11;
+                         DUG 10;
                          DIG 6;
                          DUP;
                          DUG 7;
                          MEM;
                          IF
-                           { DIG 8;
+                           { DIG 7;
                              DUP;
-                             DUG 9;
+                             DUG 8;
                              DIG 1;
                              DUP;
                              DUG 2;
                              GET;
                              IF_NONE
-                               { PUSH string "GetNoneValue";
+                               { PUSH string "NotFound";
                                  FAILWITH }
                                {  };
-                             DIG 9;
+                             DIG 8;
                              DUP;
-                             DUG 10;
+                             DUG 9;
                              DIG 1;
                              DUP;
                              DUG 2;
@@ -388,32 +386,32 @@
                              DUP;
                              DUG 4;
                              UPDATE;
-                             DIP { DIG 9; DROP };
-                             DUG 9;
+                             DIP { DIG 8; DROP };
+                             DUG 8;
                              DROP }
-                           { PUSH string "KeyNotFound";
+                           { PUSH string "NotFound";
                              FAILWITH } }
-                       { DIG 8;
+                       { DIG 7;
                          DUP;
-                         DUG 9;
+                         DUG 8;
                          DIG 1;
                          DUP;
                          DUG 2;
                          MEM;
                          IF
-                           { PUSH string "KeyAlreadyExists";
+                           { PUSH string "KeyExists";
                              FAILWITH }
-                           { DIG 10;
+                           { DIG 9;
                              DUP;
-                             DUG 11;
+                             DUG 10;
                              DIG 6;
                              DUP;
                              DUG 7;
                              MEM;
                              IF
-                               { DIG 8;
+                               { DIG 7;
                                  DUP;
-                                 DUG 9;
+                                 DUG 8;
                                  EMPTY_SET string;
                                  PUSH bool True;
                                  DIG 8;
@@ -425,13 +423,11 @@
                                  DUP;
                                  DUG 3;
                                  UPDATE;
-                                 DIP { DIG 8; DROP };
-                                 DUG 8 }
-                               { PUSH string "KeyNotFound";
+                                 DIP { DIG 7; DROP };
+                                 DUG 7 }
+                               { PUSH string "NotFound";
                                  FAILWITH } } };
                      DROP 6;
-                     SWAP;
-                     PAIR;
                      SWAP;
                      PAIR;
                      SWAP;
@@ -445,45 +441,47 @@
                      NIL operation;
                      PAIR }
                    { IF_LEFT
-                       { DIG 7;
+                       { DIG 6;
                          DUP;
-                         DUG 8;
+                         DUG 7;
                          SENDER;
                          COMPARE;
                          EQ;
-                         DIG 3;
+                         DIG 2;
                          DUP;
-                         DUG 4;
+                         DUG 3;
                          SENDER;
                          MEM;
                          OR;
                          NOT;
                          IF
-                           { PUSH string "InvalidCondition: r2";
+                           { PUSH string "r2";
+                             PUSH string "InvalidCondition";
+                             PAIR;
                              FAILWITH }
                            {  };
+                         DIG 3;
+                         DUP;
+                         DUG 4;
                          DIG 4;
                          DUP;
                          DUG 5;
-                         DIG 5;
+                         DIG 6;
                          DUP;
-                         DUG 6;
-                         DIG 7;
-                         DUP;
-                         DUG 8;
+                         DUG 7;
                          DIG 3;
                          DUP;
                          DUG 4;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          CDR;
                          CAR;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          UNPAIR;
@@ -491,25 +489,25 @@
                          UNPAIR;
                          SWAP;
                          DROP;
-                         DIG 7;
+                         DIG 6;
                          DUP;
-                         DUG 8;
-                         DIG 9;
+                         DUG 7;
+                         DIG 8;
                          DUP;
-                         DUG 10;
+                         DUG 9;
                          DIG 5;
                          DUP;
                          DUG 6;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          CDR;
                          CAR;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          CDR;
@@ -524,81 +522,79 @@
                          SWAP;
                          PAIR;
                          SOME;
-                         DIG 7;
+                         DIG 6;
                          DUP;
-                         DUG 8;
+                         DUG 7;
                          DIG 3;
                          DUP;
                          DUG 4;
                          GET;
                          IF_NONE
-                           { PUSH string "GetNoneValue";
+                           { PUSH string "NotFound";
                              FAILWITH }
                            {  };
                          CDR;
                          CAR;
-                         UPDATE;
-                         DIP { DIG 4; DROP };
-                         DUG 4;
-                         DIG 3;
-                         DUP;
-                         DUG 4;
-                         DIG 4;
-                         DUP;
-                         DUG 5;
-                         DIG 7;
-                         DUP;
-                         DUG 8;
-                         DIG 3;
-                         DUP;
-                         DUG 4;
-                         GET;
-                         IF_NONE
-                           { PUSH string "GetNoneValue";
-                             FAILWITH }
-                           {  };
-                         CDR;
-                         CDR;
-                         GET;
-                         IF_NONE
-                           { PUSH string "GetNoneValue";
-                             FAILWITH }
-                           {  };
-                         PUSH bool False;
-                         DIG 3;
-                         DUP;
-                         DUG 4;
-                         UPDATE;
-                         SOME;
-                         DIG 7;
-                         DUP;
-                         DUG 8;
-                         DIG 3;
-                         DUP;
-                         DUG 4;
-                         GET;
-                         IF_NONE
-                           { PUSH string "GetNoneValue";
-                             FAILWITH }
-                           {  };
-                         CDR;
-                         CDR;
                          UPDATE;
                          DIP { DIG 3; DROP };
                          DUG 3;
-                         DIG 5;
+                         DIG 2;
                          DUP;
-                         DUG 6;
+                         DUG 3;
+                         DIG 3;
+                         DUP;
+                         DUG 4;
+                         DIG 6;
+                         DUP;
+                         DUG 7;
+                         DIG 3;
+                         DUP;
+                         DUG 4;
+                         GET;
+                         IF_NONE
+                           { PUSH string "NotFound";
+                             FAILWITH }
+                           {  };
+                         CDR;
+                         CDR;
+                         GET;
+                         IF_NONE
+                           { PUSH string "NotFound";
+                             FAILWITH }
+                           {  };
+                         PUSH bool False;
+                         DIG 3;
+                         DUP;
+                         DUG 4;
+                         UPDATE;
+                         SOME;
+                         DIG 6;
+                         DUP;
+                         DUG 7;
+                         DIG 3;
+                         DUP;
+                         DUG 4;
+                         GET;
+                         IF_NONE
+                           { PUSH string "NotFound";
+                             FAILWITH }
+                           {  };
+                         CDR;
+                         CDR;
+                         UPDATE;
+                         DIP { DIG 2; DROP };
+                         DUG 2;
+                         DIG 4;
+                         DUP;
+                         DUG 5;
                          NONE (pair address (pair address address));
                          DIG 2;
                          DUP;
                          DUG 3;
                          UPDATE;
-                         DIP { DIG 5; DROP };
-                         DUG 5;
+                         DIP { DIG 4; DROP };
+                         DUG 4;
                          DROP;
-                         SWAP;
-                         PAIR;
                          SWAP;
                          PAIR;
                          SWAP;
@@ -612,9 +608,9 @@
                          NIL operation;
                          PAIR }
                        { IF_LEFT
-                           { DIG 7;
+                           { DIG 6;
                              DUP;
-                             DUG 8;
+                             DUG 7;
                              SENDER;
                              COMPARE;
                              EQ;
@@ -624,11 +620,9 @@
                                  FAILWITH }
                                {  };
                              DUP;
-                             DIP { DIG 6; DROP };
-                             DUG 6;
+                             DIP { DIG 5; DROP };
+                             DUG 5;
                              DROP;
-                             SWAP;
-                             PAIR;
                              SWAP;
                              PAIR;
                              SWAP;
@@ -642,9 +636,9 @@
                              NIL operation;
                              PAIR }
                            { DROP;
-                             DIG 5;
+                             DIG 4;
                              DUP;
-                             DUG 6;
+                             DUG 5;
                              SENDER;
                              COMPARE;
                              EQ;
@@ -653,13 +647,11 @@
                                { PUSH string "InvalidCaller";
                                  FAILWITH }
                                {  };
-                             DIG 5;
+                             DIG 4;
                              DUP;
-                             DUG 6;
-                             DIP { DIG 6; DROP };
-                             DUG 6;
-                             SWAP;
-                             PAIR;
+                             DUG 5;
+                             DIP { DIG 5; DROP };
+                             DUG 5;
                              SWAP;
                              PAIR;
                              SWAP;

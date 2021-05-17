@@ -1,6 +1,6 @@
-# (Pair "tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a" (Pair "tz1TQyYUuFbAroVARwhh5Fgqu2JE9HrvNi3a" (Pair "48.8701025,2.2909664" (Pair 1 (Pair { 1 } (Pair 0 (Pair {  } { Elt 1 2000 })))))))
+# (Pair admin (Pair gps (Pair admin (Pair 1 (Pair { 1 } (Pair { } (Pair 0 { Elt 1 2000 })))))))
 {
-  storage (pair (address %admin) (pair (address %admin_candidate) (pair (string %gps) (pair (nat %currency) (pair (set %plugs nat) (pair (nat %state) (pair (set %users address) (map %service nat nat))))))));
+  storage (pair (address %admin) (pair (string %gps) (pair (address %admin_candidate) (pair (nat %currency) (pair (set %plugs nat) (pair (set %users address) (pair (nat %state) (map %service nat nat))))))));
   parameter (or (nat %addplug) (or (nat %rmplug) (or (pair %addservice (nat %t) (nat %p)) (or (nat %rmservice) (or (nat %setcurrency) (or (address %adduser) (or (address %rmuser) (or (address %transfer_admin) (unit %accept_admin)))))))));
   code { UNPAIR;
          DIP { UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP; UNPAIR; SWAP };
@@ -17,14 +17,11 @@
                  FAILWITH }
                {  };
              DIG 4;
-             DUP;
-             DUG 5;
              PUSH bool True;
              DIG 2;
              DUP;
              DUG 3;
              UPDATE;
-             DIP { DIG 4; DROP };
              DUG 4;
              DROP;
              SWAP;
@@ -56,14 +53,11 @@
                      FAILWITH }
                    {  };
                  DIG 4;
-                 DUP;
-                 DUG 5;
                  PUSH bool False;
                  DIG 2;
                  DUP;
                  DUG 3;
                  UPDATE;
-                 DIP { DIG 4; DROP };
                  DUG 4;
                  DROP;
                  SWAP;
@@ -104,7 +98,7 @@
                      DUG 3;
                      MEM;
                      IF
-                       { PUSH string "KeyAlreadyExists";
+                       { PUSH string "KeyExists";
                          FAILWITH }
                        { DIG 2;
                          DUP;
@@ -219,26 +213,26 @@
                                    { PUSH string "InvalidCaller";
                                      FAILWITH }
                                    {  };
-                                 DIG 2;
+                                 DIG 3;
                                  DUP;
-                                 DUG 3;
+                                 DUG 4;
                                  DIG 1;
                                  DUP;
                                  DUG 2;
                                  MEM;
                                  IF
-                                   { PUSH string "KeyAlreadyExists";
+                                   { PUSH string "KeyExists";
                                      FAILWITH }
-                                   { DIG 2;
+                                   { DIG 3;
                                      DUP;
-                                     DUG 3;
+                                     DUG 4;
                                      PUSH bool True;
                                      DIG 2;
                                      DUP;
                                      DUG 3;
                                      UPDATE;
-                                     DIP { DIG 2; DROP };
-                                     DUG 2 };
+                                     DIP { DIG 3; DROP };
+                                     DUG 3 };
                                  DROP;
                                  SWAP;
                                  PAIR;
@@ -268,16 +262,16 @@
                                        { PUSH string "InvalidCaller";
                                          FAILWITH }
                                        {  };
-                                     DIG 2;
+                                     DIG 3;
                                      DUP;
-                                     DUG 3;
+                                     DUG 4;
                                      PUSH bool False;
                                      DIG 2;
                                      DUP;
                                      DUG 3;
                                      UPDATE;
-                                     DIP { DIG 2; DROP };
-                                     DUG 2;
+                                     DIP { DIG 3; DROP };
+                                     DUG 3;
                                      DROP;
                                      SWAP;
                                      PAIR;
@@ -308,8 +302,8 @@
                                              FAILWITH }
                                            {  };
                                          DUP;
-                                         DIP { DIG 7; DROP };
-                                         DUG 7;
+                                         DIP { DIG 6; DROP };
+                                         DUG 6;
                                          DROP;
                                          SWAP;
                                          PAIR;
@@ -328,9 +322,9 @@
                                          NIL operation;
                                          PAIR }
                                        { DROP;
-                                         DIG 6;
+                                         DIG 5;
                                          DUP;
-                                         DUG 7;
+                                         DUG 6;
                                          SENDER;
                                          COMPARE;
                                          EQ;
@@ -339,9 +333,9 @@
                                            { PUSH string "InvalidCaller";
                                              FAILWITH }
                                            {  };
-                                         DIG 6;
+                                         DIG 5;
                                          DUP;
-                                         DUG 7;
+                                         DUG 6;
                                          DIP { DIG 7; DROP };
                                          DUG 7;
                                          SWAP;
