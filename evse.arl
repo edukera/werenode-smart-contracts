@@ -2,10 +2,9 @@
 
 archetype evse(
   admin : address,
+  admin_candidate : address = admin,
 // EVSE DATA
   gps : string)
-
-variable admin_candidate : address = admin
 
 variable currency : nat = 1
 
@@ -56,6 +55,13 @@ entry setcurrency (c : nat) {
   called by admin
   effect {
     currency := c;
+  }
+}
+
+entry setgps (t : string) {
+  called by admin
+  effect {
+    gps := t;
   }
 }
 
